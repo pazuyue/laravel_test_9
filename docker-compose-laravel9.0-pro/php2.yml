@@ -1,0 +1,49 @@
+version: "3"
+services:
+    nginx:
+        image: nginx:1.15.0-alpine
+        volumes:
+            - /d/www/oms_pro/docker-compose-wms-pro/conf/nginx/:/etc/nginx/conf.d/
+            - /d/www/oms_pro/:/usr/share/nginx/html:cached
+        ports:
+            - "8098:80"
+            #- "30001:30001"
+            #- "30004:30004"
+        depends_on:
+            - php
+        restart: on-failure
+    php:
+        image: leleos/php-fpm:7.2
+        volumes:
+            - /d/www/oms_pro/:/usr/share/nginx/html:cached
+            - /d/www/oms_pro/docker-compose-wms-pro/files:/usr/share/nginx/files:cached
+        ports:
+            - "9000:9000"
+        depends_on:
+            #- mysql
+            - redis
+       # environment:
+           # - DB_PORT=3306
+           # - DB_HOST=mysql
+        restart: on-failure
+    redis:
+        image: redis:4.0.10-alpine
+        volumes:
+            - /d/www/oms_pro/docker-compose-wms-pro/redis:/data:cached
+            - /d/www/oms_pro/docker-compose-wms-pro/conf/redis/redis-6379.conf:/home/redis/redis-6379.conf
+        ports:
+            - "6379:6379"
+        command: ["redis-server", "/home/redis/redis-6379.conf"]
+        restart: on-failure
+    rabbitmq:
+        image: rabbitmq:management
+        #volumes:
+        #- /home/rabbitmq/etc/rabbitmq:/etc/rabbitmq
+        #- /home/rabbitmq/lib/rabbitmq:/var/lib/rabbitmq
+        #- /home/rabbitmq/log/rabbitmq/:/var/log/rabbitmq
+        hostname: myrabbitmq
+        ports:
+          - "15672:15672"
+        environment:
+          - RABBITMQ_DEFAULT_USER=admin
+          - RABBITMQ_DEFAULT_PASS=admin

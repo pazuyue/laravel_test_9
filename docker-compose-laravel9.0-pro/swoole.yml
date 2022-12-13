@@ -1,0 +1,54 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.15.0-alpine
+    volumes:
+      - ./conf/nginx/:/etc/nginx/conf.d/
+      - ./html:/var/www/html:cached
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    restart: on-failure
+
+  php:
+    image: nixus/swoole:4.4.4
+    volumes:
+      - ./conf/php:/usr/local/etc/php/conf.d
+      - ./conf/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./html:/var/www/html:cached
+      - ./files:/var/www/files:cached
+    ports:
+      - "1215:1215"
+      #command: ["sh", "-c", "php /var/www/html/swoole/artisan swoole:http start && tail -f /dev/null"]
+    command: ["sh", "-c", "php /var/www/html/CRM0908/bin/laravels start && tail -f /dev/null"]
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=mysql
+    restart: on-failure
+
+  mysql:
+    image: mysql:latest
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./conf/mysql8/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=lumen
+      - TZ=Asia/Shanghai
+    ports:
+      - "3306:3306"
+    restart: on-failure
+
+  redis:
+    image: redis:4.0.10-alpine
+    volumes:
+      - ./redis:/data:cached
+      - ./conf/redis/redis.conf:/home/redis/redis.conf
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "/home/redis/redis.conf"]
+    restart: on-failure

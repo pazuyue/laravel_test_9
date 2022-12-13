@@ -1,0 +1,38 @@
+version: "3"
+services:
+    nginx:
+        image: nginx:1.15.0-alpine
+        volumes:
+            - /d/www/laravel_9.0_test/docker-compose-laravel9.0-pro/conf/nginx/:/etc/nginx/conf.d/
+            - /d/www/laravel_9.0_test/:/usr/share/nginx/html:cached
+        ports:
+            - "8098:80"
+        depends_on:
+            - php
+        restart: on-failure
+    php:
+        build: ./ext-php8.0
+        image: php8.0 #leleos/php-fpm:7.2
+        volumes:
+            - /d/www/laravel_9.0_test/:/usr/share/nginx/html:cached
+            - /d/www/laravel_9.0_test/docker-compose-laravel9.0-pro/files:/usr/share/nginx/files:cached
+        ports:
+            - "9000:9000"
+        depends_on:
+            - mysql
+        restart: on-failure
+    mysql:
+        image: mysql:5.7
+        volumes:
+          - /d/www/laravel_9.0_test/docker-compose-laravel9.0-pro/conf/data:/var/lib/mysql:cached
+          - /d/www/laravel_9.0_test/docker-compose-laravel9.0-pro/conf/mysql/mysql.cnf:/etc/mysql/conf.d/my.cnf
+        environment:
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_DATABASE=lumen
+          - TZ=Asia/Shanghai
+        ports:
+          - "3306:3306"
+        command: ["--innodb_use_native_aio=0"]
+        restart: on-failure
+
+
