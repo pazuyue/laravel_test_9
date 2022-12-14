@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +38,7 @@ class ProcessPodcast implements ShouldQueue
      */
     public function middleware()
     {
-        return [new RateLimitedWithRedis('backups')];
+        return [new RateLimitedWithRedis('backups'),(new ThrottlesExceptions(10, 5))->backoff(1)];
     }
 
 
