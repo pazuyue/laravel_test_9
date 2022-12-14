@@ -1,5 +1,6 @@
 <?php
 
+use Aex\YueguangLogDrive\MonologCustomizeFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -113,6 +114,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'custom' => [
+            'driver' => 'custom',
+            'via' => MonologCustomizeFormatter::class,
+            'path' => storage_path('logs/laravel.log'),
+            'days' => 30
+        ]
     ],
 
 ];

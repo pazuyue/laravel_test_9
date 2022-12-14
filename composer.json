@@ -12,7 +12,8 @@
         "laravel/horizon": "^5.10",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "predis/predis": "^2.0"
+        "predis/predis": "^2.0",
+        "yueguang/yueguang-log-drive": "dev-main"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

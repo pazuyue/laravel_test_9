@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4414ea010d9c92ce1e012882889c838d",
+    "content-hash": "43787d6a320d2db5dc8d804895adc10e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5568,6 +5568,40 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yueguang/yueguang-log-drive",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pazuyue/YueguangLogDrive.git",
+                "reference": "71eb212c6b002beb63ab455094a2c1d37124a5d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pazuyue/YueguangLogDrive/zipball/71eb212c6b002beb63ab455094a2c1d37124a5d6",
+                "reference": "71eb212c6b002beb63ab455094a2c1d37124a5d6",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aex\\YueguangLogDrive\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "yueguang",
+                    "email": "yueguang@qingmutec.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/pazuyue/YueguangLogDrive/issues",
+                "source": "https://github.com/pazuyue/YueguangLogDrive/tree/main"
+            },
+            "time": "2021-12-06T07:39:40+00:00"
         }
     ],
     "packages-dev": [
@@ -7852,7 +7886,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "yueguang/yueguang-log-drive": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

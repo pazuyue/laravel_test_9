@@ -11,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class TestController extends BaseController
 {
@@ -33,12 +34,24 @@ class TestController extends BaseController
         });
     }
 
+    /**
+     * 测试队列
+     */
     public function testQueue()
     {
         dump('缓存队列');
         //ProcessPodcast::dispatch(['id'=>1,'msg'=>'测试']);
         ProcessPodcast::dispatch(['id'=>2,'msg'=>'测试'])
             ->delay(now()->addMinutes(1));
+    }
+
+    /**
+     * 测试日志驱动
+     */
+    public function testLog()
+    {
+        dump('测试日志驱动');
+        Log::info('测试日志驱动');
     }
 
 }
