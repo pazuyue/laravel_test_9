@@ -34,13 +34,13 @@ class ImportCsv implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('处理批次开始:'.$this->batch()->id, [ $this->page ,$this->num]);
         if ($this->batch()->cancelled()) {
             // 确定批次是否已取消...
             Log::info('确定批次是否已取消');
             return;
         }
-        $randomId       =   rand(2,5);
-        sleep($randomId);
+        sleep(5);
         Log::info('处理完成批次:'.$this->batch()->id, [ $this->page ,$this->num]);
 
     }

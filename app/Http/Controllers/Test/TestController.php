@@ -77,7 +77,7 @@ class TestController extends BaseController
             })->finally(function (Batch $batch) {
                 // 批处理已完成执行...
                 Log::info('批处理已完成执行'.$batch->id);
-            })->name('Import CSV')->dispatch();
+            })->name('Import CSV')->onQueue('imports')->dispatch();
         }catch (Throwable $exception){
             dump($exception->getMessage());
         }
