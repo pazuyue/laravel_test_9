@@ -34,10 +34,15 @@ class TestController extends BaseController
         $testCache = Cache::get('testCache');
         dump('缓存测试:'.$testCache);
         $id =1;
-        return Cache::remember('user1', 3600, function () use ($id) {
+        $user = Cache::remember('user1', 3600, function () use ($id) {
             dump('没有，进来了');
             return User::query()->where('id',$id)->first();
         });
+
+        return response()->json([
+            'state' => 'success',
+            'msg' => $user,
+        ]);
     }
 
     /**
