@@ -7,6 +7,7 @@ use App\Jobs\OptimizePodcast;
 use App\Jobs\ProcessPodcast;
 use App\Jobs\ReleasePodcast;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Bus\Batch;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -14,9 +15,13 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Throwable;
 
 class TestController extends BaseController
@@ -95,6 +100,54 @@ class TestController extends BaseController
     {
         dump('测试日志驱动');
         Log::info('测试日志驱动');
+    }
+
+    /**
+     * 测试多数据库源
+     */
+    public function testDataBase()
+    {
+        dump('测试多数据库源');
+     /*   $user = new User();
+        $user->setConnection('oms');
+        $user->name = '月光';
+        $user->email = 'xxx';
+        $user->password = 'xxx';
+        $user->save();*/
+
+        $user = User::on('oms')->first();
+        dd($user->toArray());
+    }
+
+    public function testAuth()
+    {
+        $userOl = User::query()->first()->toArray();
+        $status = Password::reset(
+            $userOl,
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        dump($status);
+        $credentials = [
+            'email'=>'284934551@qq.com',
+            'password'=>'xxx',
+        ];
+
+        dump($credentials,$userOl);
+        if (Auth::attempt($credentials)) {
+            // 获取当前的认证用户信息 ...
+            $user = Auth::user();
+            dd($user);
+        }
+
     }
 
 }

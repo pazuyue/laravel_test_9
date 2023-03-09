@@ -24,5 +24,7 @@ Route::prefix('internalApi')->namespace('Test')->group(function(){
     Route::any('/queue', [TestController::class, 'testQueue']);
     Route::any('/log', [TestController::class, 'testLog']);
     Route::any('/testQueueBatch', [TestController::class, 'testQueueBatch']);
+    Route::any('/testDataBase', [TestController::class, 'testDataBase']);
+    Route::any('/testAuth', [TestController::class, 'testAuth']);
 
 });
