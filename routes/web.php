@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return ['Laravel' => app()->version()];
 });
-
+require __DIR__.'/auth.php';
 Route::prefix('internalApi')->namespace('Test')->group(function(){
     //首页
     Route::any('/cache', [TestController::class, 'testCache']);
